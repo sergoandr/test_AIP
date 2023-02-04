@@ -6,7 +6,7 @@ import json
 import os
 
 bot = telebot.TeleBot(config.token)
-
+print('1')
 
 
 answers = list()

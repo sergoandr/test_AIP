@@ -1,26 +1,56 @@
+
+close_options = ['Да', 'Нет']
+
 questions = [
-'1. Выходите ли вы из себя по малейшему поводу?',
-'2. Боитесь ли вы разозлить человека, который заведомо физически сильнее вас?',
-'3. Начинаете ли вы скандалить, чтобы на вас обратили внимание?',
-'4. Любите ли вы ездить на большой скорости, даже если это связано с риском для жизни?',
-'5. Увлекаетесь ли вы лекарствами, когда заболеете?',
-'6. Пойдете ли вы на все, чтобы получить то, что вам очень хочется?',
-'7. Любите ли вы больших собак?',
-'8. Любите ли вы сидеть часами на солнце?',
-'9. Уверены ли вы, что когда-нибудь станете знаменитостью?',
-'10. Умеете ли вы вовремя остановиться, если чувствуете, что начинаете проигрывать?',
-'11. Привыкли ли вы много есть, даже если не голодны?',
-'12. Любите ли вы знать заранее, что вам подарят?']
+    {'text': 'Выходите ли вы из себя по малейшему поводу?', 'type': 'closed', 'options': close_options},
+    {'text': 'Боитесь ли вы разозлить человека, который заведомо физически сильнее вас?', 'type': 'closed', 'options': close_options},
+    {'text': 'Начинаете ли вы скандалить, чтобы на вас обратили внимание?', 'type': 'closed', 'options': close_options},
+    {'text': 'Любите ли вы ездить на большой скорости, даже если это связано с риском для жизни?', 'type': 'closed', 'options': close_options},
+    {'text': 'Увлекаетесь ли вы лекарствами, когда заболеете?', 'type': 'closed', 'options': close_options},
+    {'text': 'Пойдете ли вы на все, чтобы получить то, что вам очень хочется?', 'type': 'closed', 'options': close_options},
+    {'text': 'Любите ли вы больших собак?', 'type': 'closed', 'options': close_options},
+    {'text': 'Любите ли вы сидеть часами на солнце?', 'type': 'closed', 'options': close_options},
+    {'text': 'Уверены ли вы, что когда-нибудь станете знаменитостью?', 'type': 'closed', 'options': close_options},
+    {'text': 'Умеете ли вы вовремя остановиться, если чувствуете, что начинаете проигрывать?', 'type': 'closed', 'options': close_options},
+    {'text': 'Привыкли ли вы много есть, даже если не голодны?', 'type': 'closed', 'options': close_options},
+    {'text': 'Любите ли вы знать заранее, что вам подарят?', 'type': 'closed', 'options': close_options}
+]
 
-ANSWER_MAP = {
-    'Да' : 1,
-    'Нет': 0
-}
+class Anket:
+    def __init__(self, config):
+        self.config = config
+        self.length = len(config)
+        self.answers = None
+        self.scores = 0
+    def add_answers(self, answers: list):
+        self.answers = answers
+        self._counter()
+    def _counter(self):
+        if not self.answers:
+            return print("Нет ответов")
+        for i in range(self.length):
+            qtype = self.config[i]['type']
+            qoptions =  self.config[i]['options']
+            qanswer = self.answers[i]
+            if qtype == 'closed':
+                self.scores += 1 if qanswer == 'Да' else + 0
+            if qtype == 'multiple_choice':
+                pass
+            if qtype == 'number':
+                pass
 
-positive = [2, 10]
-negative = [1, 3, 4, 5, 6, 8, 9, 11, 12]
-answers = ['Да', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет']
+        print(self.scores)
 
+
+answers = ['Да', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Да', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет']
+
+anketa = Anket(questions)
+anketa.add_answers(answers)
+
+
+
+# positive = [2, 10]
+# negative = [1, 3, 4, 5, 6, 8, 9, 11, 12]
 # превратить вопросы и варианты ответов в конфиг
 # создать класс с методами обработки конфига (каунтер сравнивает словарь ответов с конфигом и выдает балл)
 # что если ответы это множественный выбор с выбором нескольких вариантов (есть ли ответ в конфиге - балл), свободный ответ (поиск слов?)
@@ -30,19 +60,6 @@ answers = ['Да', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', '
 # ООП отдельные классы вопрос и ответ, ответ наследуется от вопроса и содержит методы обработки,
 # отдельный класс анкета, который инициализирует вопросы по конфигу
 # примимает ответы словарем и возвращает анкету и результат
-def counter(answers: list):
-    if len(answers) != 12:
-        return print('Не достаточно ответов')
-    ball = 0
-    for i in range(len(answers)):
-        if answers[i] == 'Нет' and i + 1 in negative:
-            ball += 1
-        elif answers[i] == 'Да' and i + 1 in positive:
-            ball += 1
-        else:
-            print(f'вы не получаете балл за вопрос {i + 1}')
-
-    return ball
 
 def text_result(answers: list):
     int_result = counter(answers)
@@ -66,4 +83,3 @@ def text_result(answers: list):
 
     return result
 
-print(text_result(answers))

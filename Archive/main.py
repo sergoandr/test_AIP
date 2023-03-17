@@ -1,7 +1,7 @@
 import telebot
 from telebot import types  # для указание типов
 import config
-from poll import text_result, questions
+from poll import questions
 import json
 import os
 

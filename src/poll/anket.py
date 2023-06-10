@@ -1,3 +1,7 @@
+from .config import questions
+from dto.base import db
+
+
 class Anket:
     def __init__(self, config):
         self.config = config
@@ -6,24 +10,30 @@ class Anket:
         self.scores = 0
 
     def add_answers(self, answers: list):
+        print(f"Add_answers {answers}")
         self.scores = 0
         self.answers = answers
-        self._counter()
         return self.scores
 
-    def get_question(self,k):
-      return self.config[k].get('text')
+    def get_question(self, k):
+        return db.get_text_by_id(k)
 
-    def _counter(self):
-        for i in range(self.length):
-            qtype = self.config[i].get('qtype')
-            qoptions =  self.config[i].get('options')
-            right_answer =  self.config[i].get('right_answer')
-            qanswer = self.answers[i]
+
+    def get_score(self, chat_id: int):
+        answers = db.get_user_answers(chat_id)
+
+        score = 0
+        for i in range(len(answers)):
+            qtype = db.get_type_by_id(i)
             if qtype == 'closed':
-                self.scores += 1 if qanswer == 'Да' else + 0
+                    if answers[i] == 'Да':
+                        score += 1
+                    else:
+                        score += 0
             if qtype == 'multiple_choice':
-                pass
-            if qtype == 'number':
-                pass
-        print(self.scores)
+                score += db.get_options_by_id(i + 1).index(answers[i])
+
+        return score
+
+
+anket = Anket(questions)

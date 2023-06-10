@@ -46,7 +46,7 @@ def get_question_node(questions):
     qlist = LinkedList()
     for i in range(len(questions))[::-1]:
         qtext = questions[i].get('text')
-        qtype = questions[i].get('qtype')
+        qtype = questions[i].get('type')
         qoptions = questions[i].get('options')
         question = Question(qtext, qtype, qoptions)
         qlist.add_node(question)
